@@ -56,6 +56,12 @@ const PostPage = () => {
                         post.id === editingPost.id ? { ...post, title: editedTitle, body: editedBody } : post
                     );
                     setPosts(updatedPosts);
+
+                    if (showAllPosts) {
+                        setVisiblePosts(updatedPosts);
+                    } else {
+                        setVisiblePosts(updatedPosts.slice(0, 4));
+                    }
                     setEditingPost(null); 
                 })
                 .catch((err) => {
