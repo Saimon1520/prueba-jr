@@ -34,65 +34,62 @@ Este proyecto es una aplicación web desarrollada con **Next.js** y **Axios** pa
     ```
 
 5. Abre la aplicación en tu navegador:
-    ```
-    http://localhost:3000
-    ```
+    [http://localhost:3000](http://localhost:3000)
 
 ## Estructura del Proyecto
 
-- **`src/app/post/page.tsx`**: Componente principal que maneja la publicación, visualización y edición de publicaciones.
-- **`Styles`**: Cada componente tiene su propio diseño completamente responsivo.
+- **src/app/layout.tsx**: Componente principal que maneja la estructura global del sitio, incluyendo la barra de navegación y el diseño base.
+- **src/app/page.tsx**: Página de inicio donde se muestra un mensaje de bienvenida y el formulario para agregar publicaciones.
+- **src/app/posts/page.tsx**: Página que muestra una lista de publicaciones con la opción de editar cada una.
+- **src/app/components/Navbar.tsx**: Componente de navegación que permite la navegación entre las páginas principales del sitio.
+- **src/app/components/PostForm.tsx**: Formulario para agregar o editar publicaciones.
+- **src/app/context/PostContext.tsx**: Contexto global que maneja el estado de las publicaciones y proporciona funciones para agregar, editar y alternar la visibilidad de las publicaciones.
+- **src/app/styles/globals.css**: Estilos globales de la aplicación, incluyendo soporte para un modo oscuro.
+- **tsconfig.json**: Configuración de TypeScript.
+- **package.json**: Dependencias y scripts del proyecto.
 
 ## Funcionalidades Detalladas
 
 ### Cargar Publicaciones
 
-- Las publicaciones se cargan al inicio mediante una solicitud `GET` a la API de **JSONPlaceholder**.
-- Se muestra un mensaje de error si la carga falla.
+- Las publicaciones se cargan al inicio mediante una solicitud GET a la API de **JSONPlaceholder**.
 
-### Crear Nueva Publicación
+### Agregar Publicaciones
 
-- Los usuarios pueden agregar nuevas publicaciones completando un formulario con un título y contenido.
-- La nueva publicación se envía a la API mediante una solicitud `POST` y se agrega al estado local.
+- Los usuarios pueden agregar nuevas publicaciones mediante el formulario en la página de inicio.
 
-### Editar Publicación
+### Editar Publicaciones
 
-- Los usuarios pueden editar cualquier publicación haciendo clic en el botón "Editar" en cada tarjeta de publicación.
-- El formulario de edición permite modificar el título y el contenido de la publicación seleccionada.
-- Se envía una solicitud `PATCH` a la API para guardar los cambios.
+- Los usuarios pueden editar una publicación haciendo clic en el botón "Editar" en cada tarjeta de publicación.
 
-### Mostrar/Ocultar Publicaciones
+### Alternar Visibilidad de Publicaciones
 
-- El botón "Ver más" alterna entre mostrar solo las primeras 4 publicaciones o todas las disponibles.
-- Esto se gestiona con el estado `visiblePosts`, que se actualiza dinámicamente.
+- Los usuarios pueden alternar entre ver solo las primeras 4 publicaciones o todas las disponibles con el botón "Show More" o "Show Less".
 
-### Manejo de Errores
+## Dependencias
 
-- Los errores se gestionan y se muestran al usuario cuando:
-    - No se pueden cargar las publicaciones.
-    - No se puede agregar una nueva publicación.
-    - No se puede guardar una publicación editada.
+- **Next.js**: Framework de React para aplicaciones de servidor.
+- **React**: Librería para construir interfaces de usuario.
+- **Axios**: Cliente HTTP para realizar solicitudes.
+- **Tailwind CSS**: Framework de CSS para estilos rápidos y responsivos.
 
-## Tecnología Utilizada
+## Desarrollo
 
-- **Next.js**: Framework para aplicaciones React que permite la renderización del lado del servidor.
-- **Axios**: Cliente HTTP para hacer peticiones a la API.
-- **Tailwind CSS**: Framework de CSS para un diseño moderno y responsivo.
-- **JSONPlaceholder**: API de prueba para simular datos de publicaciones.
+- **Instalación de dependencias**: 
+    ```bash
+    npm install
+    ```
 
-## Capturas de Pantalla
+- **Ejecutar el proyecto**:
+    ```bash
+    npm run dev
+    ```
 
-- **Vista de publicaciones**: Muestra una lista de publicaciones con la opción de ver más, editar o agregar nuevas publicaciones.
-
-## Consideraciones
-
-- El proyecto no maneja la persistencia de datos más allá de las solicitudes a la API.
-- Utiliza datos de prueba de **JSONPlaceholder** para simular un backend real.
-
-## Contribuciones
-
-Si deseas contribuir al proyecto, siéntete libre de abrir un "pull request" o enviar un "issue" para discutir mejoras o correcciones.
+- **Linter**: El proyecto usa ESLint para el análisis de código.
+    ```bash
+    npm run lint
+    ```
 
 ## Licencia
 
-Este proyecto está bajo la Licencia MIT. Para más detalles, revisa el archivo [LICENSE](LICENSE.txt).
+Este proyecto está bajo la Licencia MIT. Consulta el archivo LICENSE.txt para más detalles.
