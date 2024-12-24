@@ -13,9 +13,8 @@ const Navbar = () => {
   return (
     <nav className="bg-purple-700 p-4">
       <div className="max-w-7xl mx-auto flex justify-between items-center">
-        <Link href="/" className="text-white text-2xl font-bold">Mi App</Link>
-        
-        {/* Icono del menú para móvil */}
+        <Link href="/" className="text-white text-2xl font-bold">Prueba JR</Link>
+
         <button
           className="text-white lg:hidden"
           onClick={toggleMenu}
@@ -25,8 +24,7 @@ const Navbar = () => {
           </svg>
         </button>
 
-        {/* Menú de navegación */}
-        <div className={`lg:flex ${isOpen ? 'block' : 'hidden'}`}>
+        <div className="hidden lg:flex">
           <ul className="flex space-x-4">
             <li>
               <Link href="/" className="text-white hover:bg-purple-500 px-3 py-2 rounded-md">Inicio</Link>
@@ -34,14 +32,10 @@ const Navbar = () => {
             <li>
               <Link href="/post" className="text-white hover:bg-purple-500 px-3 py-2 rounded-md">Publicaciones</Link>
             </li>
-            <li>
-              <Link href="/create" className="text-white hover:bg-purple-500 px-3 py-2 rounded-md">Crear</Link>
-            </li>
           </ul>
         </div>
       </div>
 
-      {/* Menú para móvil */}
       {isOpen && (
         <div className="lg:hidden mt-4">
           <ul className="space-y-2">
@@ -49,10 +43,7 @@ const Navbar = () => {
               <Link href="/" className="block text-white hover:bg-purple-500 px-3 py-2 rounded-md">Inicio</Link>
             </li>
             <li>
-              <Link href="/posts" className="block text-white hover:bg-purple-500 px-3 py-2 rounded-md">Publicaciones</Link>
-            </li>
-            <li>
-              <Link href="/create" className="block text-white hover:bg-purple-500 px-3 py-2 rounded-md">Crear</Link>
+              <Link href="/post" className="block text-white hover:bg-purple-500 px-3 py-2 rounded-md">Publicaciones</Link>
             </li>
           </ul>
         </div>
