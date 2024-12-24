@@ -30,7 +30,7 @@ const Navbar = () => {
               <Link href="/" className="text-white hover:bg-purple-500 px-3 py-2 rounded-md">Inicio</Link>
             </li>
             <li>
-              <Link href="/post" className="text-white hover:bg-purple-500 px-3 py-2 rounded-md">Publicaciones</Link>
+              <Link href="/posts" className="text-white hover:bg-purple-500 px-3 py-2 rounded-md">Publicaciones</Link>
             </li>
           </ul>
         </div>
@@ -43,7 +43,7 @@ const Navbar = () => {
               <Link href="/" className="block text-white hover:bg-purple-500 px-3 py-2 rounded-md">Inicio</Link>
             </li>
             <li>
-              <Link href="/post" className="block text-white hover:bg-purple-500 px-3 py-2 rounded-md">Publicaciones</Link>
+              <Link href="/posts" className="block text-white hover:bg-purple-500 px-3 py-2 rounded-md">Publicaciones</Link>
             </li>
           </ul>
         </div>
