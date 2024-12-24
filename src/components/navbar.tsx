@@ -30,10 +30,7 @@ const Navbar = () => {
               <Link href="/" className="text-white hover:bg-purple-500 px-3 py-2 rounded-md">Inicio</Link>
             </li>
             <li>
-              <Link href="/posts" className="text-white hover:bg-purple-500 px-3 py-2 rounded-md">Ver Publicaciones</Link>
-            </li>
-            <li>
-              <Link href="/posts" className="text-white hover:bg-purple-500 px-3 py-2 rounded-md">Ver Publicaciones</Link>
+              <Link href="/posts" className="text-white hover:bg-purple-500 px-3 py-2 rounded-md">Publicaciones</Link>
             </li>
           </ul>
         </div>
