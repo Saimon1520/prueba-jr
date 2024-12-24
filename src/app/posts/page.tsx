@@ -9,18 +9,17 @@ export default function PostsPage() {
     const [editingPostId, setEditingPostId] = useState<number | null>(null);
 
     const handleEdit = (post: { id: number, title: string, body: string }) => {
-        setEditingPostId(post.id); // Setea el post a editar
+        setEditingPostId(post.id);
     };
 
     const handleCancelEdit = () => {
-        setEditingPostId(null); // Cancela la edición
+        setEditingPostId(null);
     };
 
     return (
         <div className="p-4">
             <h1 className="text-3xl font-bold mb-8">Posts</h1>
 
-            {/* Muestra el formulario de edición solo si hay un post a editar */}
             {editingPostId && (
                 <div>
                     <PostForm postId={editingPostId} />
@@ -30,7 +29,6 @@ export default function PostsPage() {
                 </div>
             )}
 
-            {/* Lista de publicaciones con el diseño solicitado */}
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-8">
                 {visiblePosts.map(post => (
                     <div

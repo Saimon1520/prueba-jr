@@ -40,21 +40,18 @@ export const PostProvider = ({ children }: { children: ReactNode }) => {
     }, []);
 
     const addPost = (title: string, body: string) => {
-        // Crear un nuevo objeto post con el ID local generado
         const newPost = {
-            id: posts.length + 1,  // Sumar 1 al id del último post o asignar 1 si es el primer post
+            id: posts.length + 1,
             title,
             body,
             userId: 1,
         };
 
-        // Hacer la solicitud POST a JSONPlaceholder
         axios.post('https://jsonplaceholder.typicode.com/posts', newPost)
             .then((response) => {
-                // Agregar el nuevo post al estado local
                 setPosts([newPost, ...posts]);
                 setVisiblePosts(showAllPosts ? [newPost, ...posts] : [newPost, ...posts].slice(0, 4));
-                setError(null);  // Resetea el error si la solicitud fue exitosa
+                setError(null);
             })
             .catch((err) => {
                 console.error("Error al agregar la publicación:", err);

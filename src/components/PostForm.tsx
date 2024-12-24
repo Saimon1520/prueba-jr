@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { usePostContext } from '../context/PostContext';
 
 interface PostFormProps {
-    postId?: number;  // Si se pasa el id, es para editar el post
+    postId?: number;
 }
 
 const PostForm = ({ postId }: PostFormProps) => {
@@ -13,7 +13,6 @@ const PostForm = ({ postId }: PostFormProps) => {
     const [body, setBody] = useState('');
     const [message, setMessage] = useState('');
 
-    // Si hay un postId, busca el post correspondiente para editarlo
     useEffect(() => {
         if (postId) {
             const postToEdit = posts.find(post => post.id === postId);
