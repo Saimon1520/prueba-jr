@@ -5,7 +5,7 @@ import { usePostContext } from '../../context/PostContext';
 import PostForm from '../../components/PostForm';
 
 export default function PostsPage() {
-    const { visiblePosts, toggleShowMore, showAllPosts } = usePostContext();
+    const { visiblePosts, toggleShowMore, showAllPosts, deletePost } = usePostContext();
     const [editingPostId, setEditingPostId] = useState<number | null>(null);
 
     const handleEdit = (post: { id: number, title: string, body: string }) => {
@@ -39,12 +39,20 @@ export default function PostsPage() {
                             <h2 className="text-xl font-semibold text-purple-800">{post.title}</h2>
                             <p className="mt-2 text-gray-700">{post.body}</p>
                         </div>
-                        <button
-                            onClick={() => handleEdit(post)}
-                            className="mt-4 bg-purple-600 text-white py-2 px-4 rounded-full hover:bg-purple-800 self-end"
-                        >
-                            Editar
-                        </button>
+                        <div className='flex self-end'>
+                            <button
+                                onClick={() => handleEdit(post)}
+                                className="mt-4 bg-purple-600 text-white py-2 px-4 rounded-full hover:bg-purple-800 self-end"
+                            >
+                                Editar
+                            </button>
+                            <button
+                                onClick={() => deletePost(post.id)}
+                                className="mt-4 bg-red-600 text-white py-2 px-4 rounded-full hover:bg-red-800"
+                            >
+                                Eliminar
+                            </button>
+                        </div>
                     </div>
                 ))}
             </div>

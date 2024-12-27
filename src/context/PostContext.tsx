@@ -14,6 +14,7 @@ interface PostContextType {
     visiblePosts: Post[];
     addPost: (title: string, body: string) => void;
     editPost: (id: number, title: string, body: string) => void;
+    deletePost: (id: number) => void;
     toggleShowMore: () => void;
     showAllPosts: boolean;
     error: string | null;
@@ -108,13 +109,41 @@ export const PostProvider = ({ children }: { children: ReactNode }) => {
             });
     };
 
+    const deletePost = (id: number) => {
+        axios.delete(`https://jsonplaceholder.typicode.com/posts/${id}`)
+            .then(() => {
+                const updatedPosts = posts.filter(post => post.id !== id);
+                setPosts(updatedPosts);
+                setVisiblePosts(showAllPosts ? updatedPosts : updatedPosts.slice(0, 4));
+                setError(null);
+            })
+            .catch((err) => {
+                console.error("Error al eliminar la publicación:", err);
+                if (err.response) {
+                    switch (err.response.status) {
+                        case 404:
+                            setError("Error 404: No se pudo encontrar la publicación.");
+                            break;
+                        case 500:
+                            setError("Error 500: Hubo un problema en el servidor.");
+                            break;
+                        default:
+                            setError("Hubo un error al eliminar la publicación.");
+                    }
+                } else {
+                    setError("No se pudo conectar con el servidor.");
+                }
+            });
+    };
+
+
     const toggleShowMore = () => {
         setShowAllPosts(!showAllPosts);
         setVisiblePosts(!showAllPosts ? posts : posts.slice(0, 4));
     };
 
     return (
-        <PostContext.Provider value={{ posts, visiblePosts, addPost, editPost, toggleShowMore, showAllPosts, error }}>
+        <PostContext.Provider value={{ posts, visiblePosts, addPost, editPost, deletePost, toggleShowMore, showAllPosts, error }}>
             {children}
         </PostContext.Provider>
     );
