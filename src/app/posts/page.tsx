@@ -19,7 +19,7 @@ export default function PostsPage() {
 
     return (
         <div className="p-4">
-            <h1 className="text-3xl font-bold mb-8">Posts</h1>
+            <h1 className='text-3xl font-bold text-purple-900 mb-6 text-center'>Publicaciones</h1>
 
             {editingPostId && (
                 <div>
