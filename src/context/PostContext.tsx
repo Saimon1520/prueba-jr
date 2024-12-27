@@ -12,12 +12,14 @@ interface Post {
 interface PostContextType {
     posts: Post[];
     visiblePosts: Post[];
+    getPostTittle: (id: number) => void;
     addPost: (title: string, body: string) => void;
     editPost: (id: number, title: string, body: string) => void;
     deletePost: (id: number) => void;
     toggleShowMore: () => void;
     showAllPosts: boolean;
     error: string | null;
+    publicationTittle: string | null;
 }
 
 const PostContext = createContext<PostContextType | undefined>(undefined);
@@ -27,6 +29,7 @@ export const PostProvider = ({ children }: { children: ReactNode }) => {
     const [visiblePosts, setVisiblePosts] = useState<Post[]>([]);
     const [showAllPosts, setShowAllPosts] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const [publicationTittle, setPublicationTittle] = useState<string | null>(null);
 
     useEffect(() => {
         axios.get('https://jsonplaceholder.typicode.com/posts')
@@ -39,6 +42,13 @@ export const PostProvider = ({ children }: { children: ReactNode }) => {
                 setError("Hubo un error al cargar las publicaciones.");
             });
     }, []);
+
+    const getPostTittle = (id: number) => {
+        const Publicacion = posts?.find(publicacion => publicacion.id === id) || {title: ""};
+        if (Publicacion.title !== "") {
+            setPublicationTittle(Publicacion.title);
+        }
+    }
 
     const addPost = (title: string, body: string) => {
         const newPost = {
@@ -143,7 +153,7 @@ export const PostProvider = ({ children }: { children: ReactNode }) => {
     };
 
     return (
-        <PostContext.Provider value={{ posts, visiblePosts, addPost, editPost, deletePost, toggleShowMore, showAllPosts, error }}>
+        <PostContext.Provider value={{ posts, visiblePosts, getPostTittle, addPost, editPost, deletePost, toggleShowMore, showAllPosts, error, publicationTittle }}>
             {children}
         </PostContext.Provider>
     );
