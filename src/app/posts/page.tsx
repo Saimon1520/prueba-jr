@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { usePostContext } from '../../context/PostContext';
 import PostForm from '../../components/PostForm';
+import Link from 'next/link';
 
 export default function PostsPage() {
     const { visiblePosts, toggleShowMore, showAllPosts, deletePost } = usePostContext();
@@ -39,21 +40,27 @@ export default function PostsPage() {
                             <h2 className="text-xl font-semibold text-purple-800">{post.title}</h2>
                             <p className="mt-2 text-gray-700">{post.body}</p>
                         </div>
-                        <div className='flex self-end'>
+                        <div className="flex flex-col sm:flex-row sm:justify-between sm:self-start sm:flex-wrap gap-4 mt-4">
+                            <Link href={`/comments/${post.id}`}>
+                                <div className="cursor-pointer bg-blue-600 text-white py-1 px-2 rounded-full hover:bg-blue-800 transition-all duration-300 text-sm sm:text-base text-center">
+                                    Ver comentarios
+                                </div>
+                            </Link>
                             <button
                                 onClick={() => handleEdit(post)}
-                                className="mt-4 bg-purple-600 text-white py-2 px-4 rounded-full hover:bg-purple-800 self-end"
+                                className="bg-purple-600 text-white py-1 px-2 rounded-full hover:bg-purple-800 text-sm sm:text-base"
                             >
                                 Editar
                             </button>
                             <button
                                 onClick={() => deletePost(post.id)}
-                                className="mt-4 bg-red-600 text-white py-2 px-4 rounded-full hover:bg-red-800"
+                                className="bg-red-600 text-white py-1 px-2 rounded-full hover:bg-red-800 text-sm sm:text-base"
                             >
                                 Eliminar
                             </button>
                         </div>
                     </div>
+
                 ))}
             </div>
 
