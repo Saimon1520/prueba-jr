@@ -18,8 +18,8 @@ export default function CommentsPage() {
     }, []);
 
     return (
-        <div className='text-center'>
-            <h1 className='text-3xl font-bold text-purple-900 mb-6'>{`Comentarios de la publicación ${publicationTittle}`}</h1>
+        <div className=''>
+            <h1 className='text-3xl font-bold text-purple-900 mb-6 text-center'>{`Comentarios de la publicación ${publicationTittle}`}</h1>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-8">
                 {visibleComments.map(comment => (
                     <div
