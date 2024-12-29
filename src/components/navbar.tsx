@@ -2,12 +2,23 @@
 
 import Link from 'next/link';
 import { useState } from 'react';
+import { useLoginContext } from '@/context/LoginContext';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { login, setLogin, setUserID } = useLoginContext();
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
+  };
+
+  const handleLogout = () => {
+    // Actualizar el contexto para reflejar que el usuario cerró sesión
+    setLogin(false);
+    setUserID(undefined);
+    sessionStorage.removeItem('login');
+    sessionStorage.removeItem('userId');
+
   };
 
   return (
@@ -29,22 +40,52 @@ const Navbar = () => {
             <li>
               <Link href="/" className="text-white hover:bg-purple-500 px-3 py-2 rounded-md">Inicio</Link>
             </li>
-            <li>
-              <Link href="/posts" className="text-white hover:bg-purple-500 px-3 py-2 rounded-md">Publicaciones</Link>
-            </li>
+            {login && (
+              <>
+                <li>
+                  <Link href="/posts" className="text-white hover:bg-purple-500 px-3 py-2 rounded-md">Publicaciones</Link>
+                </li>
+                <li>
+                  <Link href="/post-form" className="text-white hover:bg-purple-500 px-3 py-2 rounded-md">Crear Publicación</Link>
+                </li>
+                <li>
+                  <button
+                    className="text-white hover:bg-purple-500 px-3 py-2 rounded-md"
+                    onClick={handleLogout}
+                  >
+                    Cerrar sesión
+                  </button>
+                </li>
+              </>
+            )}
           </ul>
         </div>
       </div>
 
       {isOpen && (
-        <div className="lg:hidden mt-4">
+        <div className="lg:hidden mt-5">
           <ul className="space-y-2">
             <li>
               <Link href="/" className="block text-white hover:bg-purple-500 px-3 py-2 rounded-md">Inicio</Link>
             </li>
-            <li>
-              <Link href="/posts" className="block text-white hover:bg-purple-500 px-3 py-2 rounded-md">Publicaciones</Link>
-            </li>
+            {login && (
+              <>
+                <li>
+                  <Link href="/posts" className="block text-white hover:bg-purple-500 px-3 py-2 rounded-md">Publicaciones</Link>
+                </li>
+                <li>
+                  <Link href="/post-form" className="block text-white hover:bg-purple-500 px-3 py-2 rounded-md">Crear Publicación</Link>
+                </li>
+                <li>
+                  <button
+                    className="block text-white hover:bg-purple-500 px-3 py-2 rounded-md"
+                    onClick={handleLogout}
+                  >
+                    Cerrar sesión
+                  </button>
+                </li>
+              </>
+            )}
           </ul>
         </div>
       )}
@@ -53,3 +94,6 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
+
+
