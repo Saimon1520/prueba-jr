@@ -1,13 +1,26 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { usePostContext } from '../../context/PostContext';
 import PostForm from '../../components/PostForm';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useLoginContext } from '@/context/LoginContext';
 
 export default function PostsPage() {
     const { visiblePosts, toggleShowMore, showAllPosts, deletePost } = usePostContext();
     const [editingPostId, setEditingPostId] = useState<number | null>(null);
+    const { login } = useLoginContext();
+    const router = useRouter();
+
+    useEffect(() => {
+        // Validar login desde el contexto o sessionStorage
+        const isLoggedIn = login || sessionStorage.getItem('login') === 'true';
+
+        if (!isLoggedIn) {
+            router.push('/login-form'); // Redirige si no hay sesión activa
+        }
+    }, [login, router]);
 
     const handleEdit = (post: { id: number, title: string, body: string }) => {
         setEditingPostId(post.id);
@@ -25,7 +38,7 @@ export default function PostsPage() {
                 <div>
                     <PostForm postId={editingPostId} />
                     <button onClick={handleCancelEdit} className="bg-gray-500 text-white p-2 mt-4">
-                        Cancel Edit
+                        Cancelar edición
                     </button>
                 </div>
             )}
@@ -60,15 +73,13 @@ export default function PostsPage() {
                             </button>
                         </div>
                     </div>
-
                 ))}
             </div>
 
             <button onClick={toggleShowMore} className="bg-purple-700 text-white p-2 mt-4">
-                {showAllPosts ? 'Show Less' : 'Show More'}
+                {showAllPosts ? 'Mostrar menos' : 'Mostrar más'}
             </button>
         </div>
     );
 }
-
 
