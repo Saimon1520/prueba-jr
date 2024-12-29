@@ -4,6 +4,7 @@ import "../styles/globals.css";
 import Navbar from "../components/navbar";
 import { PostProvider } from "@/context/PostContext";
 import { CommentProvider } from "@/context/CommentContext";
+import { LoginProvider } from "@/context/LoginContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,12 +31,14 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <PostProvider>
-          <CommentProvider>
-            <Navbar />
-            <main>{children}</main>
-          </CommentProvider>
-        </PostProvider>
+        <LoginProvider>
+          <PostProvider>
+            <CommentProvider>
+              <Navbar />
+              <main>{children}</main>
+            </CommentProvider>
+          </PostProvider>
+        </LoginProvider>
       </body>
     </html>
   );

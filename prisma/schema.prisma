@@ -1,0 +1,94 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       Int      @id @default(autoincrement())
+  name     String
+  username String   @unique
+  email    String   @unique
+  password String
+  phone    String?
+  website  String?
+  address  Address?
+  albums   Album[]
+  company  Company?
+  posts    Post[]
+  todos    Todo[]
+}
+
+model Address {
+  id      Int     @id @default(autoincrement())
+  userId  Int     @unique
+  street  String?
+  suite   String?
+  city    String?
+  zipcode String?
+  user    User    @relation(fields: [userId], references: [id])
+  geo     Geo?
+}
+
+model Geo {
+  id        Int     @id @default(autoincrement())
+  addressId Int     @unique
+  lat       String
+  lng       String
+  address   Address @relation(fields: [addressId], references: [id])
+}
+
+model Company {
+  id          Int     @id @default(autoincrement())
+  userId      Int     @unique
+  name        String
+  catchPhrase String?
+  bs          String?
+  user        User    @relation(fields: [userId], references: [id])
+}
+
+model Post {
+  id       Int       @id @default(autoincrement())
+  userId   Int
+  title    String
+  body     String?
+  comments Comment[]
+  user     User      @relation(fields: [userId], references: [id])
+}
+
+model Comment {
+  id     Int     @id @default(autoincrement())
+  postId Int
+  name   String
+  email  String
+  body   String?
+  post   Post    @relation(fields: [postId], references: [id])
+}
+
+model Album {
+  id     Int     @id @default(autoincrement())
+  userId Int
+  title  String
+  user   User    @relation(fields: [userId], references: [id])
+  photos Photo[]
+}
+
+model Photo {
+  id           Int     @id @default(autoincrement())
+  albumId      Int
+  title        String?
+  url          String
+  thumbnailUrl String?
+  album        Album   @relation(fields: [albumId], references: [id])
+}
+
+model Todo {
+  id        Int     @id @default(autoincrement())
+  userId    Int
+  title     String
+  completed Boolean @default(false)
+  user      User    @relation(fields: [userId], references: [id])
+}
