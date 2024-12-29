@@ -2,11 +2,13 @@
 
 import axios from 'axios';
 import { useState, createContext, useContext, ReactNode, useEffect } from 'react';
+import { useLoginContext } from './LoginContext';
 
 interface Post {
     id: number;
     title: string;
     body: string;
+    userId: number;
 }
 
 interface PostContextType {
@@ -30,97 +32,80 @@ export const PostProvider = ({ children }: { children: ReactNode }) => {
     const [showAllPosts, setShowAllPosts] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [publicationTittle, setPublicationTittle] = useState<string | null>(null);
+    const { userID } = useLoginContext();
 
     useEffect(() => {
-        axios.get('https://jsonplaceholder.typicode.com/posts')
+        axios.get('/api/posts')
             .then((response) => {
-                setPosts(response.data);
-                setVisiblePosts(response.data.slice(0, 4));
+                // Filtrar publicaciones por userID
+                const userPosts = response.data.filter((post: Post) => post.userId === userID);
+                setPosts(userPosts);
+                setVisiblePosts(userPosts.slice(0, 4));
             })
             .catch((err) => {
                 console.error("Error al cargar las publicaciones:", err);
                 setError("Hubo un error al cargar las publicaciones.");
             });
-    }, []);
+    }, [userID]);
 
     const getPostTittle = (id: number) => {
-        const Publicacion = posts?.find(publicacion => publicacion.id === id) || {title: ""};
+        const Publicacion = posts.find(publicacion => publicacion.id === id) || { title: "" };
         if (Publicacion.title !== "") {
             setPublicationTittle(Publicacion.title);
         }
-    }
+    };
 
     const addPost = (title: string, body: string) => {
-        const newPost = {
+        if (!userID) {
+            setError("No se puede agregar la publicación porque el usuario no está definido.");
+            return;
+        }
+
+        const newPost: Post = {
             id: posts.length + 1,
             title,
             body,
-            userId: 1,
+            userId: userID,
         };
 
-        axios.post('https://jsonplaceholder.typicode.com/posts', newPost)
-            .then((response) => {
+        axios.post('/api/posts', newPost)
+            .then(() => {
                 setPosts([newPost, ...posts]);
                 setVisiblePosts(showAllPosts ? [newPost, ...posts] : [newPost, ...posts].slice(0, 4));
                 setError(null);
             })
             .catch((err) => {
                 console.error("Error al agregar la publicación:", err);
-                if (err.response) {
-                    switch (err.response.status) {
-                        case 400:
-                            setError("Error 400: Solicitud incorrecta. Por favor verifica los datos enviados.");
-                            break;
-                        case 404:
-                            setError("Error 404: No se pudo encontrar el recurso.");
-                            break;
-                        case 500:
-                            setError("Error 500: Hubo un problema en el servidor.");
-                            break;
-                        default:
-                            setError("Hubo un error al agregar la publicación.");
-                    }
-                } else {
-                    setError("No se pudo conectar con el servidor.");
-                }
+                setError("Hubo un error al agregar la publicación.");
             });
     };
 
-
     const editPost = (id: number, title: string, body: string) => {
-        const updatedPost = { title, body };
+        if (!userID) {
+            setError("No se puede editar la publicación porque el usuario no está definido.");
+            return;
+        }
 
-        axios.patch(`https://jsonplaceholder.typicode.com/posts/${id}`, updatedPost)
-            .then((response) => {
-                const updatedPosts = posts.map(post => post.id === id ? { ...post, title, body } : post);
+        const updatedPost: Post = { id, title, body, userId: userID };
+
+        axios.patch(`/api/posts`, updatedPost)
+            .then(() => {
+                const updatedPosts = posts.map(post =>
+                    post.id === id ? { ...post, title, body } : post
+                );
                 setPosts(updatedPosts);
                 setVisiblePosts(showAllPosts ? updatedPosts : updatedPosts.slice(0, 4));
                 setError(null);
             })
             .catch((err) => {
                 console.error("Error al editar la publicación:", err);
-                if (err.response) {
-                    switch (err.response.status) {
-                        case 400:
-                            setError("Error 400: Solicitud incorrecta. Por favor verifica los datos enviados.");
-                            break;
-                        case 404:
-                            setError("Error 404: No se pudo encontrar la publicación.");
-                            break;
-                        case 500:
-                            setError("Error 500: Hubo un problema en el servidor.");
-                            break;
-                        default:
-                            setError("Hubo un error al editar la publicación.");
-                    }
-                } else {
-                    setError("No se pudo conectar con el servidor.");
-                }
+                setError("Hubo un error al editar la publicación.");
             });
     };
 
+
     const deletePost = (id: number) => {
-        axios.delete(`https://jsonplaceholder.typicode.com/posts/${id}`)
+        axios.delete(`/api/posts`, { data: { id } })
             .then(() => {
                 const updatedPosts = posts.filter(post => post.id !== id);
                 setPosts(updatedPosts);
@@ -129,23 +114,9 @@ export const PostProvider = ({ children }: { children: ReactNode }) => {
             })
             .catch((err) => {
                 console.error("Error al eliminar la publicación:", err);
-                if (err.response) {
-                    switch (err.response.status) {
-                        case 404:
-                            setError("Error 404: No se pudo encontrar la publicación.");
-                            break;
-                        case 500:
-                            setError("Error 500: Hubo un problema en el servidor.");
-                            break;
-                        default:
-                            setError("Hubo un error al eliminar la publicación.");
-                    }
-                } else {
-                    setError("No se pudo conectar con el servidor.");
-                }
+                setError("Hubo un error al eliminar la publicación.");
             });
     };
-
 
     const toggleShowMore = () => {
         setShowAllPosts(!showAllPosts);
@@ -166,3 +137,4 @@ export const usePostContext = () => {
     }
     return context;
 };
+
