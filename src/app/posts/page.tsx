@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -14,7 +16,7 @@ export default function PostsPage() {
     const router = useRouter();
 
     useEffect(() => {
-        const isLoggedIn = login || sessionStorage.getItem('login') === 'true';
+        const isLoggedIn = login;
         if (!isLoggedIn) {
             router.push('/login-form');
         }
