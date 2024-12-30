@@ -11,7 +11,7 @@ export default function Login() {
     const [password, setPassword] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
     const [successMessage, setSuccessMessage] = useState("");
-    const { login, userID, setLogin, setUserID } = useLoginContext();
+    const { setLogin, setUserID } = useLoginContext();
     const router = useRouter();
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -32,11 +32,11 @@ export default function Login() {
             setPassword("");
             setErrorMessage("");
             router.push("/");
-        } catch (error: any) {
-            if (error.response) {
-                setErrorMessage(error.response.data.message);
+        } catch (err: unknown) {
+            if (axios.isAxiosError(err)) {
+                setErrorMessage(err.response?.data.message || "An error occurred.");
             } else {
-                setErrorMessage("An error occurred. Please try again.");
+                setErrorMessage("An unexpected error occurred. Please try again.");
             }
             setSuccessMessage("");
         }

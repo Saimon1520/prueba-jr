@@ -20,6 +20,7 @@ interface CommentContextType {
     deleteComment: (id: number, postId: number) => void;
     error: string | null;
     publicationTittle: string | null;
+    postTitle: string | null;
 }
 
 const CommentContext = createContext<CommentContextType | undefined>(undefined);
@@ -27,7 +28,7 @@ const CommentContext = createContext<CommentContextType | undefined>(undefined);
 export const CommentProvider = ({ children }: { children: ReactNode }) => {
     const { getPostTittle, publicationTittle } = usePostContext();
     const [comments, setComments] = useState<Comment[]>([]);
-    let [visibleComments, setVisibleComments] = useState<Comment[]>([]);
+    const [visibleComments, setVisibleComments] = useState<Comment[]>([]);
     const [error, setError] = useState<string | null>("");
     const [postTitle, setPostTitle] = useState<string | null>("");
 
@@ -81,7 +82,7 @@ export const CommentProvider = ({ children }: { children: ReactNode }) => {
     };
 
     return (
-        <CommentContext.Provider value={{ comments, visibleComments, getComments, getPublicationTitle, deleteComment, error, publicationTittle }}>
+        <CommentContext.Provider value={{ comments, visibleComments, getComments, getPublicationTitle, deleteComment, error, publicationTittle, postTitle }}>
             {children}
         </CommentContext.Provider>
     );

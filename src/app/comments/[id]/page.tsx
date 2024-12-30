@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useContext } from 'react';
+import { useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { useCommentContext } from '@/context/CommentContext';
 import { useLoginContext } from '@/context/LoginContext';
@@ -9,9 +9,8 @@ export default function CommentsPage() {
     const router = useRouter();
     const pathname = usePathname();
     const publicationId = pathname?.split('/').pop();
-    const { comments, visibleComments, getComments, getPublicationTitle, deleteComment, error, publicationTittle } = useCommentContext();
+    const { visibleComments, getComments, getPublicationTitle, deleteComment, publicationTittle } = useCommentContext();
     const { login } = useLoginContext();
-    const userId = sessionStorage.getItem("userId");
 
     useEffect(() => {
         const isLoggedIn = login || sessionStorage.getItem('login') === 'true';

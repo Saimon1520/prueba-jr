@@ -58,7 +58,7 @@ export async function PATCH(request: Request) {
     }
 }
 
-export async function DELETE(request: Request, { params }: { params: { id: string } }) {
+export async function DELETE(request: Request) {
     const { id } = await request.json();
     if (isNaN(id)) {
         return NextResponse.json({ error: "ID inválido" }, { status: 400 });
