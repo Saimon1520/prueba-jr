@@ -2,7 +2,6 @@
 
 import React, { createContext, useState, useContext, ReactNode } from 'react';
 
-// Definir los tipos de datos para el usuario
 interface Geo {
   lat: string;
   lng: string;
@@ -60,12 +59,10 @@ export const UserProvider = ({ children }: UserProviderProps) => {
   const [user, setUser] = useState<User | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  // Función para agregar un nuevo usuario
   const addUser = (userData: User) => {
     setUser(userData);
   };
 
-  // Función para actualizar la información del usuario
   const updateUser = (updatedUser: User) => {
     setUser(updatedUser);
   };

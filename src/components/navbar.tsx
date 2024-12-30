@@ -1,99 +1,191 @@
 'use client';
 
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useLoginContext } from '@/context/LoginContext';
+import { Button, Navbar, NavbarBrand, NavbarContent, NavbarItem, NavbarMenuToggle, NavbarMenu, NavbarMenuItem } from '@nextui-org/react';
 
-const Navbar = () => {
+const NavbarComponent = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(false);
   const { login, setLogin, setUserID } = useLoginContext();
+
+  useEffect(() => {
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) {
+      setIsDarkMode(savedTheme === 'dark');
+    } else {
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      setIsDarkMode(prefersDark);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (isDarkMode) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      document.documentElement.setAttribute('data-theme', 'light');
+      localStorage.setItem('theme', 'light');
+    }
+  }, [isDarkMode]);
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
 
   const handleLogout = () => {
-    // Actualizar el contexto para reflejar que el usuario cerró sesión
     setLogin(false);
     setUserID(undefined);
     sessionStorage.removeItem('login');
     sessionStorage.removeItem('userId');
-
   };
 
   return (
-    <nav className="bg-purple-700 p-4">
-      <div className="max-w-7xl mx-auto flex justify-between items-center">
-        <Link href="/" className="text-white text-2xl font-bold">Prueba JR</Link>
-
-        <button
-          className="text-white lg:hidden"
+    <Navbar isBordered aria-label="Navbar" className="bg-[var(--nextui-background)] text-[var(--nextui-foreground)]">
+      <NavbarContent>
+        <NavbarMenuToggle
+          aria-label={isOpen ? 'Cerrar menú' : 'Abrir menú'}
           onClick={toggleMenu}
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-6 h-6">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
-          </svg>
-        </button>
+          className="sm:hidden"
+        />
+        <NavbarBrand>
+          <Link href="/" className="text-2xl font-bold" style={{ color: 'var(--nextui-foreground)' }}>
+            Prueba JR
+          </Link>
+        </NavbarBrand>
+      </NavbarContent>
 
-        <div className="hidden lg:flex">
-          <ul className="flex space-x-4">
-            <li>
-              <Link href="/" className="text-white hover:bg-purple-500 px-3 py-2 rounded-md">Inicio</Link>
-            </li>
-            {login && (
-              <>
-                <li>
-                  <Link href="/posts" className="text-white hover:bg-purple-500 px-3 py-2 rounded-md">Publicaciones</Link>
-                </li>
-                <li>
-                  <Link href="/post-form" className="text-white hover:bg-purple-500 px-3 py-2 rounded-md">Crear Publicación</Link>
-                </li>
-                <li>
-                  <button
-                    className="text-white hover:bg-purple-500 px-3 py-2 rounded-md"
-                    onClick={handleLogout}
-                  >
-                    Cerrar sesión
-                  </button>
-                </li>
-              </>
-            )}
-          </ul>
-        </div>
+      <NavbarContent className="hidden sm:flex gap-4" justify="center">
+        <NavbarItem>
+          <Link href="/" className="text-base" style={{ color: 'var(--nextui-foreground)' }}>
+            Inicio
+          </Link>
+        </NavbarItem>
+
+        {login && (
+          <>
+            <NavbarItem>
+              <Link href="/posts" className="text-base" style={{ color: 'var(--nextui-foreground)' }}>
+                Publicaciones
+              </Link>
+            </NavbarItem>
+            <NavbarItem>
+              <Link href="/post-form" className="text-base" style={{ color: 'var(--nextui-foreground)' }}>
+                Crear Publicación
+              </Link>
+            </NavbarItem>
+            <NavbarItem>
+              <Link href="/albums" className="text-base" style={{ color: 'var(--nextui-foreground)' }}>
+                Albums
+              </Link>
+            </NavbarItem>
+            <NavbarItem>
+              <button
+                className="text-base"
+                onClick={handleLogout}
+              >
+                Cerrar sesión
+              </button>
+            </NavbarItem>
+          </>
+        )}
+
+        {!login && (
+          <>
+            <NavbarItem>
+              <Link href="/login-form" className="text-base" style={{ color: 'var(--nextui-foreground)' }}>
+                Iniciar sesión
+              </Link>
+            </NavbarItem>
+            <NavbarItem>
+              <Link href="/register" className="text-base" style={{ color: 'var(--nextui-foreground)' }}>
+                Registrarse
+              </Link>
+            </NavbarItem>
+          </>
+        )}
+
+        {/* Botón para alternar entre modo claro y oscuro */}
+        <NavbarItem>
+          <Button
+            onClick={() => setIsDarkMode(!isDarkMode)}
+            aria-label="Cambiar modo"
+            className="text-base"
+          >
+            {isDarkMode ? '🌞 Modo Claro' : '🌙 Modo Oscuro'}
+          </Button>
+        </NavbarItem>
+      </NavbarContent>
+
+      {/* Menú en móviles */}
+      <div className={`${isOpen ? 'block' : 'hidden'} sm:hidden`}>
+        <NavbarMenu>
+          <NavbarMenuItem>
+            <Link href="/" className="block" style={{ color: 'var(--nextui-foreground)' }}>
+              Inicio
+            </Link>
+          </NavbarMenuItem>
+          {login && (
+            <>
+              <NavbarMenuItem>
+                <Link href="/posts" className="block" style={{ color: 'var(--nextui-foreground)' }}>
+                  Publicaciones
+                </Link>
+              </NavbarMenuItem>
+              <NavbarMenuItem>
+                <Link href="/post-form" className="block" style={{ color: 'var(--nextui-foreground)' }}>
+                  Crear Publicación
+                </Link>
+              </NavbarMenuItem>
+              <NavbarMenuItem>
+                <Link href="/albums" className="block" style={{ color: 'var(--nextui-foreground)' }}>
+                  Albums
+                </Link>
+              </NavbarMenuItem>
+              <NavbarMenuItem>
+                <button
+                  className="block"
+                  style={{ color: 'var(--nextui-foreground)' }}
+                  onClick={handleLogout}
+                >
+                  Cerrar sesión
+                </button>
+              </NavbarMenuItem>
+            </>
+          )}
+
+          {!login && (
+            <>
+              <NavbarMenuItem>
+                <Link href="/login-form" className="block" style={{ color: 'var(--nextui-foreground)' }}>
+                  Iniciar sesión
+                </Link>
+              </NavbarMenuItem>
+              <NavbarMenuItem>
+                <Link href="/register" className="block" style={{ color: 'var(--nextui-foreground)' }}>
+                  Registrarse
+                </Link>
+              </NavbarMenuItem>
+            </>
+          )}
+
+          {/* Botón de cambio de tema en móvil */}
+          <NavbarMenuItem>
+            <Button
+              onClick={() => setIsDarkMode(!isDarkMode)}
+              aria-label="Cambiar modo"
+              className="text-base w-full"
+            >
+              {isDarkMode ? '🌞 Modo Claro' : '🌙 Modo Oscuro'}
+            </Button>
+          </NavbarMenuItem>
+        </NavbarMenu>
       </div>
-
-      {isOpen && (
-        <div className="lg:hidden mt-5">
-          <ul className="space-y-2">
-            <li>
-              <Link href="/" className="block text-white hover:bg-purple-500 px-3 py-2 rounded-md">Inicio</Link>
-            </li>
-            {login && (
-              <>
-                <li>
-                  <Link href="/posts" className="block text-white hover:bg-purple-500 px-3 py-2 rounded-md">Publicaciones</Link>
-                </li>
-                <li>
-                  <Link href="/post-form" className="block text-white hover:bg-purple-500 px-3 py-2 rounded-md">Crear Publicación</Link>
-                </li>
-                <li>
-                  <button
-                    className="block text-white hover:bg-purple-500 px-3 py-2 rounded-md"
-                    onClick={handleLogout}
-                  >
-                    Cerrar sesión
-                  </button>
-                </li>
-              </>
-            )}
-          </ul>
-        </div>
-      )}
-    </nav>
+    </Navbar>
   );
 };
 
-export default Navbar;
-
+export default NavbarComponent;
 
 

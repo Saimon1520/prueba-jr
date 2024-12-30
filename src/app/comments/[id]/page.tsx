@@ -3,26 +3,26 @@
 import { useState, useEffect, useContext } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { useCommentContext } from '@/context/CommentContext';
-import { useLoginContext } from '@/context/LoginContext';  // Importamos el contexto de Login
+import { useLoginContext } from '@/context/LoginContext';
 
 export default function CommentsPage() {
     const router = useRouter();
     const pathname = usePathname();
     const publicationId = pathname?.split('/').pop();
     const { comments, visibleComments, getComments, getPublicationTitle, deleteComment, error, publicationTittle } = useCommentContext();
-    const { login } = useLoginContext();  // Obtenemos el estado de login desde el contexto
+    const { login } = useLoginContext();
+    const userId = sessionStorage.getItem("userId");
 
     useEffect(() => {
-        // Validamos si el usuario está autenticado
         const isLoggedIn = login || sessionStorage.getItem('login') === 'true';
 
         if (!isLoggedIn) {
-            router.push('/login-form'); // Redirige si no está autenticado
+            router.push('/login-form');
         } else if (publicationId !== undefined && publicationId !== '' && !Array.isArray(publicationId)) {
             getComments(Number(publicationId));
             getPublicationTitle(Number(publicationId));
         }
-    }, [login, router, publicationId, getComments, getPublicationTitle]);
+    }, []);
 
     return (
         <div className=''>

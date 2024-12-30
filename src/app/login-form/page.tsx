@@ -3,6 +3,8 @@ import { useState } from "react";
 import axios from "axios";
 import Link from 'next/link';
 import { useLoginContext } from "@/context/LoginContext";
+import { Form, Button, Input } from '@nextui-org/react';
+import { useRouter } from "next/navigation";
 
 export default function Login() {
     const [email, setEmail] = useState("");
@@ -10,6 +12,7 @@ export default function Login() {
     const [errorMessage, setErrorMessage] = useState("");
     const [successMessage, setSuccessMessage] = useState("");
     const { login, userID, setLogin, setUserID } = useLoginContext();
+    const router = useRouter();
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -17,16 +20,18 @@ export default function Login() {
         try {
             const response = await axios.post("/api/login", { email, password });
 
-            // Almacenar id del usuario y login: true en sessionStorage si la respuesta es exitosa
             if (response.data.login) {
-                sessionStorage.setItem("userId", response.data.userId); // Guardar el ID del usuario
-                sessionStorage.setItem("login", "true"); // Marcar que el usuario ha iniciado sesión
+                sessionStorage.setItem("userId", response.data.userId);
+                sessionStorage.setItem("login", "true");
                 setLogin(true);
                 setUserID(response.data.userId)
             }
 
             setSuccessMessage(response.data.message);
+            setEmail("");
+            setPassword("");
             setErrorMessage("");
+            router.push("/");
         } catch (error: any) {
             if (error.response) {
                 setErrorMessage(error.response.data.message);
@@ -38,36 +43,36 @@ export default function Login() {
     };
 
     return (
-        <div className="flex items-center justify-center min-h-screen bg-gray-100">
-            <div className="w-full max-w-md p-6 bg-white rounded-lg shadow-md">
+        <div className="flex justify-center min-h-screen">
+            <div className="w-full max-w-md p-6 rounded-lg shadow-md">
                 <h2 className="mb-6 text-2xl font-semibold text-center text-gray-700">
                     Login
                 </h2>
-                <form onSubmit={handleSubmit}>
-                    <div className="mb-4">
+                <Form onSubmit={handleSubmit}>
+                    <div className="mb-4 w-full">
                         <label htmlFor="email" className="block text-sm font-medium text-gray-600">
                             Email
                         </label>
-                        <input
+                        <Input
                             type="email"
                             id="email"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
-                            className="w-full px-4 py-2 mt-2 text-gray-700 bg-gray-200 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                             required
+                            fullWidth
                         />
                     </div>
-                    <div className="mb-4">
+                    <div className="mb-4 w-full">
                         <label htmlFor="password" className="block text-sm font-medium text-gray-600">
                             Password
                         </label>
-                        <input
+                        <Input
                             type="password"
                             id="password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
-                            className="w-full px-4 py-2 mt-2 text-gray-700 bg-gray-200 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                             required
+                            fullWidth
                         />
                     </div>
                     {errorMessage && (
@@ -76,21 +81,21 @@ export default function Login() {
                     {successMessage && (
                         <p className="mb-4 text-sm text-green-500">{successMessage}</p>
                     )}
-                    <button
-                        type="submit"
-                        className="w-full px-4 py-2 font-medium text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50"
-                    >
+                    <Button type="submit" fullWidth >
                         Login
-                    </button>
+                    </Button>
                     <Link
                         href="/"
-                        className="w-full px-4 py-2 font-medium text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50 mt-4 block text-center"
+                        className="mt-4 block text-center w-full"
                     >
-                        Sign up
+                        <Button fullWidth >
+                            Sign up
+                        </Button>
                     </Link>
-                </form>
+                </Form>
             </div>
         </div>
     );
 }
+
 

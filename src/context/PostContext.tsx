@@ -37,7 +37,6 @@ export const PostProvider = ({ children }: { children: ReactNode }) => {
     useEffect(() => {
         axios.get('/api/posts')
             .then((response) => {
-                // Filtrar publicaciones por userID
                 const userPosts = response.data.filter((post: Post) => post.userId === userID);
                 setPosts(userPosts);
                 setVisiblePosts(userPosts.slice(0, 4));
@@ -61,17 +60,17 @@ export const PostProvider = ({ children }: { children: ReactNode }) => {
             return;
         }
 
-        const newPost: Post = {
-            id: posts.length + 1,
+        const newPost: Omit<Post, 'id'> = {
             title,
             body,
             userId: userID,
         };
 
         axios.post('/api/posts', newPost)
-            .then(() => {
-                setPosts([newPost, ...posts]);
-                setVisiblePosts(showAllPosts ? [newPost, ...posts] : [newPost, ...posts].slice(0, 4));
+            .then((response) => {
+                const createdPost = response.data;
+                setPosts([createdPost, ...posts]);
+                setVisiblePosts(showAllPosts ? [createdPost, ...posts] : [createdPost, ...posts].slice(0, 4));
                 setError(null);
             })
             .catch((err) => {

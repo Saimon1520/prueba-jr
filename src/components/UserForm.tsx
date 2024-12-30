@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import axios from 'axios';
 import Link from 'next/link';
+import { Form, Input, Button } from '@nextui-org/react';
 
 const UserForm = () => {
   const [name, setName] = useState('');
@@ -83,136 +84,140 @@ const UserForm = () => {
     }
   };
 
-
   return (
-    <form onSubmit={handleSubmit} className="mb-8">
-      {message && <p className="text-green-500 text-center">{message}</p>}
-      {error && <p className="text-red-500 text-center">{error}</p>}
+    <div className="min-h-screen flex justify-center items-center">
+      <Form onSubmit={handleSubmit} className="w-full max-w-xs flex flex-col gap-4 p-6 shadow-lg rounded-lg">
+        {message && <p className="text-green-500 text-center">{message}</p>}
+        {error && <p className="text-red-500 text-center">{error}</p>}
 
-      <input
-        type="text"
-        placeholder="Name"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        className="border p-2 mb-4 w-full text-black"
-        required
-      />
-      <input
-        type="text"
-        placeholder="Username"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-        className="border p-2 mb-4 w-full text-black"
-        required
-      />
-      <input
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        className="border p-2 mb-4 w-full text-black"
-        required
-      />
-      <input
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        className="border p-2 mb-4 w-full text-black"
-        required
-      />
-      <input
-        type="text"
-        placeholder="Phone"
-        value={phone}
-        onChange={(e) => setPhone(e.target.value)}
-        className="border p-2 mb-4 w-full text-black"
-      />
-      <input
-        type="url"
-        placeholder="Website"
-        value={website}
-        onChange={(e) => setWebsite(e.target.value)}
-        className="border p-2 mb-4 w-full text-black"
-      />
+        <Input
+          isRequired
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          label="Name"
+          placeholder="Name"
+          className="mb-4"
+        />
+        <Input
+          isRequired
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          label="Username"
+          placeholder="Username"
+          className="mb-4"
+        />
+        <Input
+          isRequired
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          label="Email"
+          type="email"
+          placeholder="Email"
+          className="mb-4"
+        />
+        <Input
+          isRequired
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          label="Password"
+          type="password"
+          placeholder="Password"
+          className="mb-4"
+        />
+        <Input
+          value={phone}
+          onChange={(e) => setPhone(e.target.value)}
+          label="Phone"
+          placeholder="Phone"
+          className="mb-4"
+        />
+        <Input
+          value={website}
+          onChange={(e) => setWebsite(e.target.value)}
+          label="Website"
+          type="url"
+          placeholder="Website"
+          className="mb-4"
+        />
 
-      {/* Address */}
-      <input
-        type="text"
-        placeholder="Street"
-        value={street}
-        onChange={(e) => setStreet(e.target.value)}
-        className="border p-2 mb-4 w-full text-black"
-      />
-      <input
-        type="text"
-        placeholder="Suite"
-        value={suite}
-        onChange={(e) => setSuite(e.target.value)}
-        className="border p-2 mb-4 w-full text-black"
-      />
-      <input
-        type="text"
-        placeholder="City"
-        value={city}
-        onChange={(e) => setCity(e.target.value)}
-        className="border p-2 mb-4 w-full text-black"
-      />
-      <input
-        type="text"
-        placeholder="Zipcode"
-        value={zipcode}
-        onChange={(e) => setZipcode(e.target.value)}
-        className="border p-2 mb-4 w-full text-black"
-      />
+        <Input
+          value={street}
+          onChange={(e) => setStreet(e.target.value)}
+          label="Street"
+          placeholder="Street"
+          className="mb-4"
+        />
+        <Input
+          value={suite}
+          onChange={(e) => setSuite(e.target.value)}
+          label="Suite"
+          placeholder="Suite"
+          className="mb-4"
+        />
+        <Input
+          value={city}
+          onChange={(e) => setCity(e.target.value)}
+          label="City"
+          placeholder="City"
+          className="mb-4"
+        />
+        <Input
+          value={zipcode}
+          onChange={(e) => setZipcode(e.target.value)}
+          label="Zipcode"
+          placeholder="Zipcode"
+          className="mb-4"
+        />
 
-      {/* Geo */}
-      <input
-        type="text"
-        placeholder="Latitude"
-        value={lat}
-        onChange={(e) => setLat(e.target.value)}
-        className="border p-2 mb-4 w-full text-black"
-      />
-      <input
-        type="text"
-        placeholder="Longitude"
-        value={lng}
-        onChange={(e) => setLng(e.target.value)}
-        className="border p-2 mb-4 w-full text-black"
-      />
+        <Input
+          value={lat}
+          onChange={(e) => setLat(e.target.value)}
+          label="Latitude"
+          placeholder="Latitude"
+          className="mb-4"
+        />
+        <Input
+          value={lng}
+          onChange={(e) => setLng(e.target.value)}
+          label="Longitude"
+          placeholder="Longitude"
+          className="mb-4"
+        />
 
-      {/* Company */}
-      <input
-        type="text"
-        placeholder="Company Name"
-        value={companyName}
-        onChange={(e) => setCompanyName(e.target.value)}
-        className="border p-2 mb-4 w-full text-black"
-      />
-      <input
-        type="text"
-        placeholder="Catchphrase"
-        value={catchPhrase}
-        onChange={(e) => setCatchPhrase(e.target.value)}
-        className="border p-2 mb-4 w-full text-black"
-      />
-      <input
-        type="text"
-        placeholder="BS"
-        value={bs}
-        onChange={(e) => setBs(e.target.value)}
-        className="border p-2 mb-4 w-full text-black"
-      />
+        <Input
+          value={companyName}
+          onChange={(e) => setCompanyName(e.target.value)}
+          label="Company Name"
+          placeholder="Company Name"
+          className="mb-4"
+        />
+        <Input
+          value={catchPhrase}
+          onChange={(e) => setCatchPhrase(e.target.value)}
+          label="Catchphrase"
+          placeholder="Catchphrase"
+          className="mb-4"
+        />
+        <Input
+          value={bs}
+          onChange={(e) => setBs(e.target.value)}
+          label="BS"
+          placeholder="BS"
+          className="mb-4"
+        />
 
-      <button type="submit" className="bg-purple-700 text-white p-2 mt-4">
-        Sign up
-      </button>
-      <Link className="bg-purple-700 text-white p-3 mt-4 m-4" href="/login-form">
-        Sign in
-      </Link>
-    </form>
+        <div className="flex gap-2">
+          <Button color="primary" type="submit">
+            Sign Up
+          </Button>
+          <Link href="/login-form">
+            <Button variant="flat">Sign In</Button>
+          </Link>
+        </div>
+      </Form>
+    </div>
   );
 };
 
 export default UserForm;
+

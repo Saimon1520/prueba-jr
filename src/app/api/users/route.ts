@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
-import bcrypt from 'bcryptjs'; // Asegúrate de instalar bcryptjs para la encriptación
+import bcrypt from 'bcryptjs';
 
 export async function GET() {
     try {
@@ -15,26 +15,24 @@ export async function GET() {
 export async function POST(request: Request) {
     try {
         const {
-            name,  // El nombre principal
+            name,
             email,
             username,
             password,
             phone,
             website,
-            address,  // Recibe todo el objeto address
-            company,  // Recibe todo el objeto company
+            address,
+            company,
         } = await request.json();
         
-        // Accede a los valores dentro de address
         const { street, suite, city, zipcode, geo } = address || {};
-        const { lat, lng } = geo || {};  // Accede a lat y lng dentro de geo
+        const { lat, lng } = geo || {};
         
-        // Accede a los valores dentro de company
-        const { name: companyName, catchPhrase, bs } = company || {};  // Desestructuración con alias para company name
+        const { name: companyName, catchPhrase, bs } = company || {};
         
-        console.log(name);          // Nombre principal
-        console.log(companyName);   // Nombre de la empresa (con alias)
-        console.log(lat, lng);      // Latitud y longitud dentro de geo
+        console.log(name);
+        console.log(companyName);
+        console.log(lat, lng);
         
         
         
@@ -51,7 +49,6 @@ export async function POST(request: Request) {
         });
         
 
-        // Validación de datos
         if (!name || !email || !username || !password) {
             return NextResponse.json(
                 { error: "Name, email, username, and password are required" },
@@ -59,7 +56,6 @@ export async function POST(request: Request) {
             );
         }
 
-        // Validación de la dirección
         if (!street || !suite || !city || !zipcode) {
             return NextResponse.json(
                 { error: "Address fields are required" },
@@ -67,7 +63,6 @@ export async function POST(request: Request) {
             );
         }
 
-        // Validación de la empresa
         if (!companyName) {
             return NextResponse.json(
                 { error: "Company name is required" },
@@ -75,16 +70,14 @@ export async function POST(request: Request) {
             );
         }
 
-        // Encriptar la contraseña antes de guardarla
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        // Crear la dirección, geo y empresa como subregistros
         const user = await prisma.user.create({
             data: {
                 name,
                 email,
                 username,
-                password: hashedPassword, // Contraseña encriptada
+                password: hashedPassword,
                 phone,
                 website,
                 address: {
@@ -123,7 +116,6 @@ export async function POST(request: Request) {
     } catch (error) {
         console.error("Error creating user:", error);
 
-        // Si el error es de tipo Prisma, mostrar el error de manera más clara
         if (error instanceof Error) {
             return NextResponse.json({ error: error.message }, { status: 500 });
         }

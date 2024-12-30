@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { usePostContext } from '../context/PostContext';
+import { Form, Input, Textarea, Button } from '@nextui-org/react';
 
 interface PostFormProps {
     postId?: number;
@@ -37,29 +38,45 @@ const PostForm = ({ postId }: PostFormProps) => {
     };
 
     return (
-        <form onSubmit={handleSubmit} className="mb-8">
-            {message? <p className="text-green-500 text-center">{message}</p> : ""}
-            <input
-                type="text"
-                placeholder="Title"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                className="border p-2 mb-4 w-full text-black"
-                required
-            />
-            <textarea
-                placeholder="Body"
-                value={body}
-                onChange={(e) => setBody(e.target.value)}
-                className="border p-2 w-full text-black"
-                required
-            ></textarea>
-            <button type="submit" className="bg-purple-700 text-white p-2 mt-4">
-                {postId ? 'Edit Post' : 'Add Post'}
-            </button>
-        </form>
+        <div className="flex justify-center min-h-screen">
+            <Form
+                onSubmit={handleSubmit}
+                className="w-full max-w-lg flex flex-col gap-4"
+                validationBehavior="native"
+            >
+                {message && (
+                    <p className="text-green-500 text-center">
+                        {message}
+                    </p>
+                )}
+                <Input
+                    isRequired
+                    label="Title"
+                    labelPlacement="outside"
+                    name="title"
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                    placeholder="Enter the title"
+                    aria-label="Title"
+                />
+                <Textarea
+                    isRequired
+                    label="Body"
+                    labelPlacement="outside"
+                    name="body"
+                    value={body}
+                    onChange={(e) => setBody(e.target.value)}
+                    placeholder="Enter the body content"
+                    aria-label="Body"
+                />
+                <Button color="primary" type="submit">
+                    {postId ? 'Edit Post' : 'Add Post'}
+                </Button>
+            </Form>
+        </div>
     );
 };
 
 export default PostForm;
+
 
