@@ -14,14 +14,15 @@ export default function CommentsPage() {
 
     useEffect(() => {
         const isLoggedIn = login || sessionStorage.getItem('login') === 'true';
-
+    
         if (!isLoggedIn) {
             router.push('/login-form');
-        } else if (publicationId !== undefined && publicationId !== '' && !Array.isArray(publicationId)) {
+        } else if (publicationId && !Array.isArray(publicationId)) {
             getComments(Number(publicationId));
             getPublicationTitle(Number(publicationId));
         }
-    }, []);
+    }, [login, publicationId, router]);
+    
 
     return (
         <div className=''>
