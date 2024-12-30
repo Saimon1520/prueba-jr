@@ -24,7 +24,6 @@ export default function AlbumsPage() {
     const [editTitle, setEditTitle] = useState('');
     const [isAdding, setIsAdding] = useState(true);
     const router = useRouter();
-    const { login } = useLoginContext();
 
     const handleAddAlbum = () => {
         if (newAlbumTitle.trim() !== '') {
@@ -53,11 +52,14 @@ export default function AlbumsPage() {
     };
 
     useEffect(() => {
-            const isLoggedIn = login;
+        if (typeof window !== 'undefined') {
+            const isLoggedIn = sessionStorage.getItem('login') === 'true';
+            console.log('Valor en sessionStorage:', isLoggedIn); // Depuración
             if (!isLoggedIn) {
                 router.push('/login-form');
             }
-        }, [login, router]);
+        }
+    }, [router]);
 
     return (
         <div className="p-6">
