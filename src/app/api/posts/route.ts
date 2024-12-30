@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server';
-import prisma from '@/lib/prisma'; // Asegúrate de tener configurado tu prisma
+import prisma from '@/lib/prisma';
 
-// Obtener todas las publicaciones
 export async function GET() {
     try {
         const posts = await prisma.post.findMany();
@@ -12,18 +11,17 @@ export async function GET() {
     }
 }
 
-// Crear una nueva publicación
 export async function POST(request: Request) {
     const { title, body, userId } = await request.json();
 
-    console.log('Datos recibidos:', { title, body }); // Verifica los datos recibidos
+    console.log('Datos recibidos:', { title, body });
     
     try {
         const newPost = await prisma.post.create({
             data: {
                 title,
                 body,
-                userId, // Asegúrate de usar el userId adecuado
+                userId,
             },
         });
 
@@ -35,16 +33,11 @@ export async function POST(request: Request) {
         console.log('Publicación creada:', newPost);
         return NextResponse.json(newPost, { status: 201 });
     } catch (error) {
-        console.error('Error al crear publicación:', error); // Loguear el error completo
+        console.error('Error al crear publicación:', error);
         return NextResponse.json({ error: 'Hubo un error al crear la publicación.' }, { status: 500 });
     }
 }
 
-
-
-
-
-// Editar una publicación
 export async function PATCH(request: Request) {
     const { id, title, body } = await request.json();
 
@@ -60,7 +53,6 @@ export async function PATCH(request: Request) {
     }
 }
 
-// Eliminar una publicación
 export async function DELETE(request: Request) {
     const { id } = await request.json();
 

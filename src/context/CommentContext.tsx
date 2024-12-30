@@ -32,58 +32,33 @@ export const CommentProvider = ({ children }: { children: ReactNode }) => {
     const [postTitle, setPostTitle] = useState<string | null>("");
 
     useEffect(() => {
-        axios.get('https://jsonplaceholder.typicode.com/comments')
+        axios.get('/api/comment')
             .then((response) => {
                 setComments(response.data);
                 setVisibleComments(response.data);
             })
             .catch((err) => {
-                console.error("Error al cargar las publicaciones:", err);
-                setError("Hubo un error al cargar las publicaciones.");
+                console.error("Error al cargar los comentarios:", err);
+                setError("Hubo un error al cargar los comentarios.");
             });
     }, []);
 
     const getComments = (postId: number) => {
-        axios.get(`https://jsonplaceholder.typicode.com/posts/${postId}/comments`)
-            .then((response) => {
-                const filteredComments = comments.filter(comment => comment.postId === postId);
-                console.log(filteredComments);
-                setVisibleComments(filteredComments);
-            })
-            .catch((err) => {
-                console.error("Error al cargar los comentarios:", err);
-                if (err.response) {
-                    switch (err.response.status) {
-                        case 400:
-                            setError("Error 400: Solicitud incorrecta. Por favor verifica los datos enviados.");
-                            break;
-                        case 404:
-                            setError("Error 404: No se pudo encontrar el recurso.");
-                            break;
-                        case 500:
-                            setError("Error 500: Hubo un problema en el servidor.");
-                            break;
-                        default:
-                            setError("Hubo un error al agregar la publicación.");
-                    }
-                } else {
-                    setError("No se pudo conectar con el servidor.");
-                }
-            });
+        const filteredComments = comments.filter(comment => comment.postId === postId);
+        setVisibleComments(filteredComments);
     };
 
     const getPublicationTitle = (postId: number) => {
         getPostTittle(postId);
         setPostTitle(publicationTittle);
-    }
+    };
 
     const deleteComment = (id: number, postId: number) => {
-        axios.delete(`https://jsonplaceholder.typicode.com/comments/${id}`)
+        axios.delete(`/api/comment`, { data: { id } })
             .then(() => {
                 const updatedComments = comments.filter(comment => comment.id !== id);
-                setComments(updatedComments);  // Actualizar lista completa de comentarios
-                const updatedVisibleComments = updatedComments.filter(comment => comment.postId === postId);
-                setVisibleComments(updatedVisibleComments);
+                setComments(updatedComments);
+                setVisibleComments(updatedComments.filter(comment => comment.postId === postId));
                 setError(null);
             })
             .catch((err) => {
