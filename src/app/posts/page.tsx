@@ -5,7 +5,7 @@ import { usePostContext } from '../../context/PostContext';
 import PostForm from '../../components/PostForm';
 import { useRouter } from 'next/navigation';
 import { useLoginContext } from '@/context/LoginContext';
-import { Card, CardHeader, CardBody, CardFooter, Divider, Button, Link } from '@nextui-org/react';
+import { Card, CardHeader, CardBody, CardFooter, Divider, Button } from '@nextui-org/react';
 
 export default function PostsPage() {
     const { visiblePosts, toggleShowMore, showAllPosts, deletePost } = usePostContext();

@@ -1,8 +1,7 @@
 import { NextResponse } from 'next/server';
-import prisma from '@/lib/prisma'; // Asegúrate de tener configurado Prisma correctamente
+import prisma from '@/lib/prisma';
 
-// Obtener todos los álbumes del usuario actual
-export async function GET(request: Request) {
+export async function GET() {
     try {
         const albums = await prisma.album.findMany();
         return NextResponse.json(albums);
@@ -12,8 +11,6 @@ export async function GET(request: Request) {
     }
 }
 
-
-// Crear un nuevo álbum
 export async function POST(request: Request) {
     const { title, userId } = await request.json();
 
@@ -35,9 +32,8 @@ export async function POST(request: Request) {
     }
 }
 
-// Editar un álbum existente
 export async function PATCH(request: Request) {
-    const { id, title, userId } = await request.json();
+    const { id, title } = await request.json();
     console.log(id);
     console.log(title);
     try {
@@ -52,7 +48,6 @@ export async function PATCH(request: Request) {
     }
 }
 
-// Eliminar un álbum
 export async function DELETE(request: Request) {
     const { id } = await request.json();
 
