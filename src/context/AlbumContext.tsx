@@ -31,7 +31,6 @@ export const AlbumProvider = ({ children }: { children: ReactNode }) => {
     const [showAllAlbums, setShowAllAlbums] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [albumTitle, setAlbumTitle] = useState<string | null>(null);
-    const { userID } = useLoginContext();
     const userId = sessionStorage.getItem("userId");
 
     useEffect(() => {
@@ -45,7 +44,7 @@ export const AlbumProvider = ({ children }: { children: ReactNode }) => {
                 console.error("Error al cargar los álbumes:", err);
                 setError("Hubo un error al cargar los álbumes.");
             });
-    }, [userID]);
+    }, [userId]);
 
     const getAlbumTitle = (id: number) => {
         const album = albums.find(album => album.id === id) || { title: "" };
