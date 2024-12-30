@@ -2,7 +2,6 @@
 
 import axios from 'axios';
 import { useState, createContext, useContext, ReactNode, useEffect } from 'react';
-import { useLoginContext } from './LoginContext';
 
 interface Post {
     id: number;
