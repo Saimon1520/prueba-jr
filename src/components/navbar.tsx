@@ -9,6 +9,18 @@ const NavbarComponent = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
   const { login, setLogin, setUserID } = useLoginContext();
+  const [ loginin, setLoginin] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const isLoggedIn = sessionStorage.getItem("login") === "true";
+  
+      if (isLoggedIn) {
+        setLoginin(true);
+      }
+    }
+  }, [loginin]);
+  
 
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme');
@@ -63,7 +75,7 @@ const NavbarComponent = () => {
           </Link>
         </NavbarItem>
 
-        {login && (
+        {login || loginin && (
           <>
             <NavbarItem>
               <Link href="/posts" className="text-base" style={{ color: 'var(--nextui-foreground)' }}>
@@ -91,7 +103,7 @@ const NavbarComponent = () => {
           </>
         )}
 
-        {!login && (
+        {!login || !loginin && (
           <>
             <NavbarItem>
               <Link href="/login-form" className="text-base" style={{ color: 'var(--nextui-foreground)' }}>
@@ -126,7 +138,7 @@ const NavbarComponent = () => {
               Inicio
             </Link>
           </NavbarMenuItem>
-          {login && (
+          {login || loginin && (
             <>
               <NavbarMenuItem>
                 <Link href="/posts" className="block" style={{ color: 'var(--nextui-foreground)' }}>
@@ -155,7 +167,7 @@ const NavbarComponent = () => {
             </>
           )}
 
-          {!login && (
+          {!login || !loginin && (
             <>
               <NavbarMenuItem>
                 <Link href="/login-form" className="block" style={{ color: 'var(--nextui-foreground)' }}>
