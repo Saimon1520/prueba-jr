@@ -51,6 +51,7 @@ const NavbarComponent = () => {
     setUserID(undefined);
     sessionStorage.removeItem('login');
     sessionStorage.removeItem('userId');
+    setLoginin(false);
   };
 
   return (
