@@ -3,8 +3,7 @@
     "builds": [
       {
         "src": "package.json",
-        "use": "@vercel/next",
-        "postinstall": "prisma generate"
+        "use": "@vercel/next"
       }
     ],
     "routes": [
