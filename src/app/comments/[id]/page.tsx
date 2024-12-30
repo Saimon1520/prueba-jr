@@ -1,6 +1,9 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable react-hooks/exhaustive-deps */
+
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { useCommentContext } from '@/context/CommentContext';
 import { useLoginContext } from '@/context/LoginContext';
@@ -13,7 +16,7 @@ export default function CommentsPage() {
     const { login } = useLoginContext();
 
     useEffect(() => {
-        const isLoggedIn = login || sessionStorage.getItem('login') === 'true';
+        const isLoggedIn = login;
     
         if (!isLoggedIn) {
             router.push('/login-form');

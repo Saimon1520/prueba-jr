@@ -31,12 +31,12 @@ export const AlbumProvider = ({ children }: { children: ReactNode }) => {
     const [showAllAlbums, setShowAllAlbums] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [albumTitle, setAlbumTitle] = useState<string | null>(null);
-    const userId = sessionStorage.getItem("userId");
+    const { userID } = useLoginContext();
 
     useEffect(() => {
         axios.get('/api/album')
             .then((response) => {
-                const userAlbums = response.data.filter((album: Album) => album.userId === Number(userId));
+                const userAlbums = response.data.filter((album: Album) => album.userId === Number(userID));
                 setAlbums(userAlbums);
                 setVisibleAlbums(userAlbums.slice(0, 4));
             })
@@ -44,7 +44,7 @@ export const AlbumProvider = ({ children }: { children: ReactNode }) => {
                 console.error("Error al cargar los álbumes:", err);
                 setError("Hubo un error al cargar los álbumes.");
             });
-    }, [userId]);
+    }, [userID]);
 
     const getAlbumTitle = (id: number) => {
         const album = albums.find(album => album.id === id) || { title: "" };
@@ -54,14 +54,14 @@ export const AlbumProvider = ({ children }: { children: ReactNode }) => {
     };
 
     const addAlbum = (title: string) => {
-        if (!userId) {
+        if (!userID) {
             setError("No se puede agregar el álbum porque el usuario no está definido.");
             return;
         }
 
         const newAlbum: Omit<Album, 'id'> = {
             title,
-            userId: Number(userId),
+            userId: Number(userID),
         };
 
         axios.post('/api/album', newAlbum)
@@ -78,12 +78,12 @@ export const AlbumProvider = ({ children }: { children: ReactNode }) => {
     };
 
     const editAlbum = (id: number, title: string) => {
-        if (!userId) {
+        if (!userID) {
             setError("No se puede editar el álbum porque el usuario no está definido.");
             return;
         }
 
-        const updatedAlbum: Album = { id, title, userId: Number(userId) };
+        const updatedAlbum: Album = { id, title, userId: Number(userID) };
 
         axios.patch(`/api/album`, updatedAlbum)
             .then(() => {

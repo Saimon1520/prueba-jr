@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
 'use client';
 
 import { useAlbumContext } from '@/context/AlbumContext';
@@ -51,7 +53,7 @@ export default function AlbumsPage() {
     };
 
     useEffect(() => {
-            const isLoggedIn = login || sessionStorage.getItem('login') === 'true';
+            const isLoggedIn = login;
             if (!isLoggedIn) {
                 router.push('/login-form');
             }
