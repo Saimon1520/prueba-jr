@@ -32,7 +32,14 @@ export const PostProvider = ({ children }: { children: ReactNode }) => {
     const [showAllPosts, setShowAllPosts] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [publicationTittle, setPublicationTittle] = useState<string | null>(null);
-    const { userID } = useLoginContext();
+    const [ userID, setUserID] = useState(0);
+
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            const user = sessionStorage.getItem('userId');
+            setUserID(Number(user));
+        }
+    }, [userID])
 
     useEffect(() => {
         axios.get('/api/posts')
