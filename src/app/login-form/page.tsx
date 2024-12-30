@@ -24,14 +24,14 @@ export default function Login() {
                 sessionStorage.setItem("userId", response.data.userId);
                 sessionStorage.setItem("login", "true");
                 setLogin(true);
-                setUserID(response.data.userId)
+                setUserID(response.data.userId);
             }
 
             setSuccessMessage(response.data.message);
             setEmail("");
             setPassword("");
             setErrorMessage("");
-            router.replace("/");
+            await router.push("/");
         } catch (err: unknown) {
             if (axios.isAxiosError(err)) {
                 setErrorMessage(err.response?.data.message || "An error occurred.");
