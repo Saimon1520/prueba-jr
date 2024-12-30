@@ -31,7 +31,7 @@ export default function Login() {
             setEmail("");
             setPassword("");
             setErrorMessage("");
-            await router.push("/");
+            router.replace("/");
         } catch (err: unknown) {
             if (axios.isAxiosError(err)) {
                 setErrorMessage(err.response?.data.message || "An error occurred.");
