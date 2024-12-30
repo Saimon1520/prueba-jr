@@ -13,11 +13,23 @@ export default function PostsPage() {
     const { visiblePosts, toggleShowMore, showAllPosts, deletePost } = usePostContext();
     const [editingPostId, setEditingPostId] = useState<number | null>(null);
     const { login } = useLoginContext();
+    const [ loginin, setLoginin] = useState(false);
+
     const router = useRouter();
 
     useEffect(() => {
+        if (typeof window !== "undefined") {
+          const isLoggedIn = sessionStorage.getItem("login") === "true";
+      
+          if (isLoggedIn) {
+            setLoginin(true);
+          }
+        }
+      }, [loginin]);
+
+    useEffect(() => {
         const isLoggedIn = login;
-        if (!isLoggedIn) {
+        if (!isLoggedIn && !loginin) {
             router.push('/login-form');
         }
     }, [login, router]);
