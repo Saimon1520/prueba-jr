@@ -75,7 +75,7 @@ const NavbarComponent = () => {
           </Link>
         </NavbarItem>
 
-        {login || loginin && (
+        {(login || loginin) && (
           <>
             <NavbarItem>
               <Link href="/posts" className="text-base" style={{ color: 'var(--nextui-foreground)' }}>
@@ -103,7 +103,7 @@ const NavbarComponent = () => {
           </>
         )}
 
-        {!login || !loginin && (
+        {(!login && !loginin) && (
           <>
             <NavbarItem>
               <Link href="/login-form" className="text-base" style={{ color: 'var(--nextui-foreground)' }}>
@@ -138,7 +138,7 @@ const NavbarComponent = () => {
               Inicio
             </Link>
           </NavbarMenuItem>
-          {login || loginin && (
+          {(login || loginin) && (
             <>
               <NavbarMenuItem>
                 <Link href="/posts" className="block" style={{ color: 'var(--nextui-foreground)' }}>
@@ -167,7 +167,7 @@ const NavbarComponent = () => {
             </>
           )}
 
-          {!login || !loginin && (
+          {(!login && !loginin) && (
             <>
               <NavbarMenuItem>
                 <Link href="/login-form" className="block" style={{ color: 'var(--nextui-foreground)' }}>
