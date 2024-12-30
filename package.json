@@ -9,8 +9,8 @@
     "build": "next build && prisma generate",
     "start": "next start",
     "lint": "next lint",
-    "postinstall": "prisma generate && prisma migrate",
-    "postdeploy": "npm run generate && npm run migrate"
+    "postinstall": "prisma generate && prisma migrate dev",
+    "postdeploy": "npm run generate && npm run migrate dev"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
