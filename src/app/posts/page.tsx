@@ -12,27 +12,18 @@ import { Card, CardHeader, CardBody, CardFooter, Divider, Button } from '@nextui
 export default function PostsPage() {
     const { visiblePosts, toggleShowMore, showAllPosts, deletePost } = usePostContext();
     const [editingPostId, setEditingPostId] = useState<number | null>(null);
-    const { login } = useLoginContext();
-    const [ loginin, setLoginin] = useState(false);
 
     const router = useRouter();
 
     useEffect(() => {
-        if (typeof window !== "undefined") {
-          const isLoggedIn = sessionStorage.getItem("login") === "true";
-      
-          if (isLoggedIn) {
-            setLoginin(true);
-          }
+        if (typeof window !== 'undefined') {
+            const isLoggedIn = sessionStorage.getItem('login') === 'true';
+            console.log('Valor en sessionStorage:', isLoggedIn); // Depuración
+            if (!isLoggedIn) {
+                router.push('/login-form');
+            }
         }
-      }, [loginin]);
-
-    useEffect(() => {
-        const isLoggedIn = login;
-        if (!isLoggedIn && !loginin) {
-            router.push('/login-form');
-        }
-    }, [login, router]);
+    }, [router]);
 
     const handleEdit = (post: { id: number; title: string; body: string }) => {
         setEditingPostId(post.id);
@@ -67,10 +58,10 @@ export default function PostsPage() {
                         </CardBody>
                         <Divider />
                         <CardFooter className="flex flex-col sm:flex-row sm:justify-between gap-4">
-                            <Button fullWidth  onClick={() => {router.push(`/comments/${post.id}`)}}>
+                            <Button fullWidth onClick={() => { router.push(`/comments/${post.id}`) }}>
                                 Ver comentarios
                             </Button>
-                            <Button fullWidth  onClick={() => handleEdit(post)}>
+                            <Button fullWidth onClick={() => handleEdit(post)}>
                                 Editar
                             </Button>
                             <Button fullWidth className="warning" style={{ backgroundColor: 'var(--warning-color)' }} onClick={() => deletePost(post.id)}>
