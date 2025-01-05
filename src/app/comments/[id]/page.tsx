@@ -14,22 +14,20 @@ export default function CommentsPage() {
     const router = useRouter();
     const pathname = usePathname();
     const publicationId = pathname?.split('/').pop();
-    const { visibleComments, getComments, getPublicationTitle, deleteComment, publicationTittle, addComment } = useCommentContext();
-    const { login } = useLoginContext();
+    const { visibleComments, deleteComment, publicationTittle, addComment } = useCommentContext();
     const [showForm, setShowForm] = useState(false);
     const [newComment, setNewComment] = useState({ name: '', body: '' });
     const [isSubmitting, setIsSubmitting] = useState(false);
-
+    
     useEffect(() => {
-        const isLoggedIn = login;
-
-        if (!isLoggedIn) {
-            router.push('/login-form');
-        } else if (publicationId && !Array.isArray(publicationId)) {
-            getComments(Number(publicationId));
-            getPublicationTitle(Number(publicationId));
+        if (typeof window !== 'undefined') {
+            const isLoggedIn = sessionStorage.getItem('login') === 'true';
+            console.log('Valor en sessionStorage:', isLoggedIn);
+            if (!isLoggedIn) {
+                router.push('/login-form');
+            }
         }
-    }, [login, publicationId, router]);
+    }, [router]);
 
     const handleAddComment = async () => {
         if (!newComment.name || !newComment.body) {
