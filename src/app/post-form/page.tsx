@@ -13,7 +13,7 @@ export default function AddPostPage() {
     useEffect(() => {
         if (typeof window !== 'undefined') {
             const isLoggedIn = sessionStorage.getItem('login') === 'true';
-            console.log('Valor en sessionStorage:', isLoggedIn); // Depuración
+            console.log('Valor en sessionStorage:', isLoggedIn);
             if (!isLoggedIn) {
                 router.push('/login-form');
             }
