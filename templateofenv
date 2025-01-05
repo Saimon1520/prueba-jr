@@ -1,0 +1,9 @@
+# .env template
+# Database connection string for your primary database.
+# Replace 'postgres' with your username, 'PASSWORD' with your password,
+# 'localhost' with your database host, 'PORT' with your port, and 'DATABASE_NAME' with your database name.
+DATABASE_URL=postgresql://<USERNAME>:<PASSWORD>@<HOST>:<PORT>/<DATABASE_NAME>
+
+# Unpooled database connection string (e.g., for direct connections or specific tools).
+# Same format as DATABASE_URL. Replace values as needed.
+DATABASE_URL_UNPOOLED=postgresql://<USERNAME>:<PASSWORD>@<HOST>:<PORT>/<DATABASE_NAME>
