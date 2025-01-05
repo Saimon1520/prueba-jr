@@ -19,9 +19,9 @@ export default function Login() {
 
         try {
             const response = await axios.post("/api/login", { email, password });
-
             if (response.data.login) {
                 sessionStorage.setItem("userId", response.data.userId);
+                sessionStorage.setItem("userEmail", email);
                 sessionStorage.setItem("login", "true");
                 setLogin(true);
                 setUserID(response.data.userId);
