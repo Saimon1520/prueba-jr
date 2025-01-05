@@ -8,7 +8,7 @@ interface Comment {
     postId: number;
     id: number;
     name: string;
-    email: string;
+    email: string | null;
     body: string;
 }
 
@@ -18,6 +18,7 @@ interface CommentContextType {
     getComments: (postId: number) => void;
     getPublicationTitle: (postId: number) => void;
     deleteComment: (id: number, postId: number) => void;
+    addComment: (newComment: Omit<Comment, 'id'>, postId: number) => void;
     error: string | null;
     publicationTittle: string | null;
     postTitle: string | null;
@@ -29,8 +30,8 @@ export const CommentProvider = ({ children }: { children: ReactNode }) => {
     const { getPostTittle, publicationTittle } = usePostContext();
     const [comments, setComments] = useState<Comment[]>([]);
     const [visibleComments, setVisibleComments] = useState<Comment[]>([]);
-    const [error, setError] = useState<string | null>("");
-    const [postTitle, setPostTitle] = useState<string | null>("");
+    const [error, setError] = useState<string | null>('');
+    const [postTitle, setPostTitle] = useState<string | null>('');
 
     useEffect(() => {
         axios.get('/api/comment')
@@ -64,25 +65,37 @@ export const CommentProvider = ({ children }: { children: ReactNode }) => {
             })
             .catch((err) => {
                 console.error("Error al eliminar el comentario:", err);
-                if (err.response) {
-                    switch (err.response.status) {
-                        case 404:
-                            setError("Error 404: No se pudo encontrar el comentario.");
-                            break;
-                        case 500:
-                            setError("Error 500: Hubo un problema en el servidor.");
-                            break;
-                        default:
-                            setError("Hubo un error al eliminar el comentario.");
-                    }
-                } else {
-                    setError("No se pudo conectar con el servidor.");
-                }
+                setError("Hubo un error al eliminar el comentario.");
+            });
+    };
+
+    const addComment = (newComment: Omit<Comment, 'id'>, postId: number) => {
+        axios.post('/api/comment', newComment)
+            .then((response) => {
+                const createdComment = response.data;
+                const updatedComments = [...comments, createdComment];
+                setComments(updatedComments);
+                setVisibleComments(updatedComments.filter(comment => comment.postId === postId));
+                setError(null);
+            })
+            .catch((err) => {
+                console.error("Error al agregar el comentario:", err);
+                setError("Hubo un error al agregar el comentario.");
             });
     };
 
     return (
-        <CommentContext.Provider value={{ comments, visibleComments, getComments, getPublicationTitle, deleteComment, error, publicationTittle, postTitle }}>
+        <CommentContext.Provider value={{
+            comments,
+            visibleComments,
+            getComments,
+            getPublicationTitle,
+            deleteComment,
+            addComment,
+            error,
+            publicationTittle,
+            postTitle,
+        }}>
             {children}
         </CommentContext.Provider>
     );
